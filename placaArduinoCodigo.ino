@@ -1,7 +1,7 @@
 #include <Wire.h>
 #include "Adafruit_TCS34725.h"
 #include <Servo.h>
-
+//Parte del codigo que controla el servomotor y el nivel de luz 
 Servo servo;
 
 int pinLedR = 6;  // pin Rojo del led RGB
