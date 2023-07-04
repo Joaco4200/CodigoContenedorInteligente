@@ -45,18 +45,44 @@ void loop(void)
       Serial.println(" ");
       delay(pausa);
       
-      if (colorTemp>4250) //si el sensor de color detecta Rojo
-      {
-        Serial.println("Objeto Azul"); 
-        color(0, 0, 255);   // Azul
-        servo.write(180);
+    if (luz >= 8 && colorTemp >= 3000 && lux >= 15){
+      if (r > g && r > b) {
+        if (b < 50 && g < 50) {
+          color(234, 239, 89);  // Amarillo
+          delay(pausa);
+          color(0, 0, 0);
+        }
+        else if (b < 50 && g >= 50) {
+          color(252, 173, 36);  // Naranja
+          delay(pausa);
+          color(0, 0, 0);
+        }
+        else {
+          color(255, 0, 0);  // Rojo
+          delay(pausa);
+          color(0, 0, 0);
+        }
+    }
+    else if (g > r && g > b) {
+      if (r < 60 && b < 60) {
+        color(0, 255, 0);  // Verde
         delay(pausa);
         color(0, 0, 0);
-        servo.write(65);
-      } 
-      else if (r<0){}
+      }
+      else {
+          color(252, 98, 211);  // Rosado
+          delay(pausa);
+          color(0, 0, 0);
+      }
     }
-}
+    else{
+        color(0, 0, 255);  // Azul
+        delay(pausa);
+        color(0, 0, 0);
+      }
+    }
+    }
+  }
 
 // funcion para generar colores
 void color (int rojo, int azul, int verde) {
