@@ -12,6 +12,10 @@ int pos = servo.read();
 int posf = 0;
 Adafruit_TCS34725 tcs = Adafruit_TCS34725(TCS34725_INTEGRATIONTIME_600MS, TCS34725_GAIN_1X);
 
+// Color counters
+int redCounter = 0;
+int blueCounter = 0;
+
 void setup(void) {
   pinMode(pinLedR, OUTPUT);    // pone el pinLedR como output
   pinMode(pinLedV, OUTPUT);    // pone el pinLedV como output
@@ -20,42 +24,43 @@ void setup(void) {
   servo.attach(9);
 }
 
-void loop(void) 
-{
+void loop(void) {
   servo.write(70);
   int luz = analogRead(A0);
   Serial.print("Nivel de luz:");
   Serial.println(luz);
   delay(pausa);
 
-    if(luz<100)  //si no detecta luz el sensor de luz ambiental
-    {
-      uint16_t r, g, b, c, colorTemp, lux;
-  
-      tcs.getRawData(&r, &g, &b, &c);
-      colorTemp = tcs.calculateColorTemperature(r, g, b);
-      lux = tcs.calculateLux(r, g, b);
-      
-      Serial.print("Temperatura color: "); Serial.print(colorTemp, DEC); Serial.println(" K");
-      Serial.print("Lux : "); Serial.println(lux, DEC);
-      Serial.print("Rojo: "); Serial.println(r, DEC);
-      Serial.print("Verde: "); Serial.println(g, DEC);
-      Serial.print("Azul: "); Serial.println(b, DEC);
-      Serial.print("Clear: "); Serial.println(c, DEC);
-      Serial.println(" ");
+  if (luz < 100)  //si no detecta luz el sensor de luz ambiental
+  {
+    uint16_t r, g, b, c, colorTemp, lux;
+
+    tcs.getRawData(&r, &g, &b, &c);
+    colorTemp = tcs.calculateColorTemperature(r, g, b);
+    lux = tcs.calculateLux(r, g, b);
+
+    Serial.print("Temperatura color: "); Serial.print(colorTemp, DEC); Serial.println(" K");
+    Serial.print("Lux : "); Serial.println(lux, DEC);
+    Serial.print("Rojo: "); Serial.println(r, DEC);
+    Serial.print("Verde: "); Serial.println(g, DEC);
+    Serial.print("Azul: "); Serial.println(b, DEC);
+    Serial.print("Clear: "); Serial.println(c, DEC);
+    Serial.println(" ");
+    delay(pausa);
+
+    if (colorTemp < 3500) {
+      color(255, 0, 0);  // Rojo
+      redCounter++; // Increment red color counter
       delay(pausa);
-      
-      if (colorTemp>4250) //si el sensor de color detecta Rojo
-      {
-        Serial.println("Objeto Azul"); 
-        color(0, 0, 255);   // Azul
-        servo.write(180);
-        delay(pausa);
-        color(0, 0, 0);
-        servo.write(65);
-      } 
-      else if (r<0){}
+      color(0, 0, 0);
+    } else {
+      color(0, 0, 255);  // Azul
+      blueCounter++; // Increment blue color counter
+      servo.write(180);
+      delay(pausa);
+      color(0, 0, 0);
     }
+  }
 }
 
 // funcion para generar colores
@@ -64,3 +69,4 @@ void color (int rojo, int azul, int verde) {
   analogWrite(pinLedV, verde);
   analogWrite(pinLedA, azul);
 }
+
