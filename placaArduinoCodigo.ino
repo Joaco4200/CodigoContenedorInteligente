@@ -50,12 +50,12 @@ void loop(void) {
 
     if (colorTemp < 3500) {
       color(255, 0, 0);  // Rojo
-      redCounter++; // Increment red color counter
+      redCounter++; // Contador de color rojo
       delay(pausa);
       color(0, 0, 0);
     } else {
       color(0, 0, 255);  // Azul
-      blueCounter++; // Increment blue color counter
+      blueCounter++; // Contador color azul
       servo.write(180);
       delay(pausa);
       color(0, 0, 0);
